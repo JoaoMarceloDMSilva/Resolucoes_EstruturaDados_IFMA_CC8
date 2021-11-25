@@ -20,15 +20,12 @@ esquerda (menor índice de coluna) para a direita (maior índice de coluna).
 Por exemplo, considere o seguinte texto abaixo como um possível conteúdo para um arquivo texto
 representando uma matriz 10 por 8:.*/
 
-int main(void) {
-  int **recebe_matriz;
-  char nome_arquivo [20];
-
+int **matriz_arquivo(char file_name[25]){
   int linha, coluna;
   int **matriz;
   FILE *arquivo;
 
-  arquivo = fopen("arq_resposta_4.txt", "r");
+  arquivo = fopen(file_name, "r");
 
   if (arquivo == NULL){
     printf("\tArquivo não encontrado ou espaço insuficiente!\n");
@@ -49,17 +46,31 @@ int main(void) {
     }
   }
 
-  for (int i = 0; i < linha; ++i) {
-    for (int j = 0; j < coluna; ++j) {
-      printf(" %d ", matriz[i][j]);
+  fclose(arquivo);
+  return matriz;
+}
+
+void liberar_memoria (int **matriz, int n){
+  for (int i = 0; i < n; i++){
+    free(matriz[i]);
+  }
+  free(matriz);
+}
+
+int main(void) {
+  int **recebe_matriz;
+  int linhas = 10, colunas =8;
+  char nome_arquivo [20];
+ 
+ recebe_matriz = matriz_arquivo("matriz_questao_4.txt");
+
+ for (int i = 0; i < linhas; ++i) {
+    for (int j = 0; j < colunas; ++j) {
+      printf(" %d ", recebe_matriz[i][j]);
     }
     printf("\n");
   }
 
-  for (int i = 0; i < linha; i++){
-    free(matriz[i]);
-  }
-  free(matriz);
-  fclose(arquivo);
+  liberar_memoria(recebe_matriz, linhas);
  return 0;
 }
