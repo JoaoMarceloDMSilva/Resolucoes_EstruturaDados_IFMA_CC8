@@ -20,7 +20,10 @@ esquerda (menor índice de coluna) para a direita (maior índice de coluna).
 Por exemplo, considere o seguinte texto abaixo como um possível conteúdo para um arquivo texto
 representando uma matriz 10 por 8:.*/
 
-int **matriz_arquivo(char file_name[]){
+int main(void) {
+  int **recebe_matriz;
+  char nome_arquivo [20];
+
   int linha, coluna;
   int **matriz;
   FILE *arquivo;
@@ -58,15 +61,5 @@ int **matriz_arquivo(char file_name[]){
   }
   free(matriz);
   fclose(arquivo);
-  return matriz;
-}
-
-int main(void) {
-  int **recebe_matriz;
-  char nome_arquivo [20];
-
-  printf("Digite o nome do arquivo: (arq_resposta_4.txt)\n");
-  fgets(nome_arquivo, 14, stdin);
-  matriz_arquivo(nome_arquivo);
  return 0;
 }
