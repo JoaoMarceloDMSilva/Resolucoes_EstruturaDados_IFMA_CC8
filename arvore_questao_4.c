@@ -51,74 +51,71 @@ void add (Nodo *n, int num) {
   }
 }
 
-void to_remove (Nodo *n, int valor) {
-	Nodo *child = n;
-	Nodo *father;
+void remove_node(Nodo *root, int num){
+  Nodo *child = root;
+  Nodo *father;
 
-	do{
-		father = child;
-		if(valor < child->value){
+  do{
+    father = child;
+    if (num < child->value){
       child = child->left;
     }
-		else if(valor > child->value){
-			child = child->right;	
+    else if(num > child->value){
+      child = child->right;
     }
+  }while(child != NULL && child->value != num);
 
-	}while(child != NULL && child->value != valor);
+  if(child != NULL){
 
-	if(child != NULL){
-    //Nodo folha
-		if(child->left == NULL && child->right == NULL){
-			if(father->left == child){
+    if(child->left == NULL && child->right == NULL) {
+
+      if(father->left == child){
         father->left = NULL;
       }
-			if(father->right == child){
+      else if(father->right == child){
         father->right = NULL;
       }
-		}
-    
-    // Um filho à esquerda
-		if(child->left != NULL && child->right == NULL){
+    }
 
-			if(father->left == child){
+    if(child->left != NULL && child->right == NULL){
+
+      if(father->left == child){
         father->left = child->left;
       }
-
-			if(father->right == child){
+      else if(father->right == child){
         father->right = child->left;
       }
-		}
+      
+    }
+    
+    if(child->left == NULL && child->right != NULL){
 
-    //Um filho à direita
-		if(child->left == NULL && child->right != NULL){
-			if(father->left == child){
+      if(father->left == child){
         father->left = child->right;
       }
-
-			if(father->right == child){
+      else if(father->right == child){
         father->right = child->right;
       }
-		}
+      
+    }
 
-    //Com dois filhos
-		if(child->left != NULL && child->right != NULL){
-
-			if(child->left->right == NULL){
-				child->value = child->left->value;
-				child->left = NULL;
-
-			}else{
-				Nodo *p = child->left;
-				Nodo *aux = p;
-				while(p->right != NULL){
-					aux = p;
-					p = p -> right;
-				}
-				aux -> right = NULL;
-				child->value = p->value;
-			}
-		}
-	}
+    if(child->left != NULL && child->right != NULL){
+      if(child->left->right == NULL){
+        child->value = child->left->value;
+        child->left = NULL;
+      }
+      else{
+        Nodo *n =child->left;
+        Nodo *aux = n;
+        while(n->right != NULL){
+          aux =n;
+          n = n->right;
+        }
+        aux->right = NULL;
+        child->value = n->value;
+      }
+    }
+  }
 }
 
 int measure_height (Nodo *root) {
@@ -167,7 +164,7 @@ int main () {
   Nodo *root = create(start);
 
   do{
-    printf("\n\n1 - Adicionar valor\n2 - Imprimir árvore\n3 - Remover um valor\n4 - Achar o maior valor\n5 - Altura da árvore\n6 - Quantidade de nós\n0 - Sair\n");
+    printf("\n\n1 - Adicionar valor\n2 - Imprimir árvore\n3 - Remover um valor\n4 - Achar o maior valor\n5 - Altura da árvore\n6 - Quantidade de nós\n0 - Sair\nOpção: ");
     scanf("%d", &op);
     switch(op){
       case 1:
@@ -183,7 +180,7 @@ int main () {
       case 3:
         printf("\nInserir um valor para remover: ");
         scanf("%d", &info);
-        to_remove(root, info);
+        remove_node(root, info);
       break;
 
       case 4:
@@ -199,6 +196,7 @@ int main () {
         else{
           printf("\nA árvore possui altura: %d", height);
         }
+        
       break;
 
       case 6:
